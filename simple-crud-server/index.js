@@ -28,6 +28,13 @@ async function run() {
       const cursor = usersCollection.find();
       const result = await cursor.toArray()
       res.send(result)
+    })   
+     // update data
+    app.get("/users/:id", async (req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await usersCollection.findOne(query)
+      res.send(result)
     })
     // getting data from client side
     app.post("/users",async (req,res)=>{
@@ -35,6 +42,22 @@ async function run() {
         const result = await usersCollection.insertOne(user)
         res.send(result)
     })
+    // update data using put 
+    app.put("/users/:id", async(req, res)=>{
+      const id = req.params.id;
+      const user = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = {upsert: true}
+      const updateUser = {
+       $set:{
+        name: user.name,
+        email: user.email
+       }
+      }
+      const result = await usersCollection.updateOne(filter, updateUser, options)
+      res.send(result)
+    })
+
     // delete data single data
     app.delete("/users/:id",async (req, res)=>{
       const id = req.params.id;

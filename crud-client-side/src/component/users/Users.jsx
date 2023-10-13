@@ -30,7 +30,12 @@ const Users = () => {
                             <p><b>Name:</b> {user.name}</p>
                             <p><b>Email:</b> {user.email}</p>
                         </div>
-                        <button onClick={() => handleDelete(user._id)}>X</button>
+                        <div>
+                            <Link to={`/update/${user._id}`}>
+                                <button>Update</button>
+                            </Link>
+                            <button onClick={() => handleDelete(user._id)}>X</button>
+                        </div>
                     </div>
                 ))
             }
